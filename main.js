@@ -25,13 +25,14 @@ body.insertBefore(newBook, form);
 const add = document.getElementById('add');
 add.addEventListener('click', (e)=> {
     e.preventDefault();
-    let newTitle = document.getElementById('title').textContent;
-    let newAuthor = document.getElementById('author').textContent;
+    let newTitle = document.getElementById('title');
+    let newAuthor = document.getElementById('author');
     let newBooklist = {
-      title : newTitle,
-      author : newAuthor
+      title : newTitle.value,
+      author : newAuthor.value
     }
-    console.log(newBooklist)
+    bookList.push(newBooklist)
+    console.log(bookList)
 })
 
 
