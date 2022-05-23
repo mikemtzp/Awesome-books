@@ -1,4 +1,4 @@
-const bookList = [
+let bookList = [
   {
     title: 'The lord of the rings',
     author: 'Tolkien'
@@ -31,7 +31,8 @@ add.addEventListener('click', (e)=> {
       title : newTitle.value,
       author : newAuthor.value
     }
-    bookList.push(newBooklist)
+    bookList.push(newBooklist);
+    newBook.append(bookList)
     console.log(bookList)
 })
 
