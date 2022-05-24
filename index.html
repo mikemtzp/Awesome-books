@@ -1,32 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Awesome Books</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css">
+    <title>Awesome Books</title>
+  </head>
+  <body>
+    <h1>Awesome books</h1>
 
-  <h1>Awesome books</h1>
+    <main>
+      <section class="books" id="bookSection"></section>
 
-  <main>
-    <section class="books">
+      <form id="form">
+        <input id="title" type="text" placeholder="Title" />
+        <input id="author" type="text" placeholder="Author" />
 
+        <button id="add" type="submit">Add</button>
+      </form>
+    </main>
 
-    </section>
-  </main>
-
-  <!-- <p>The lord of the rings</p> -->
-
-  <form action="" id="form">
-    <input id="title" type="text" placeholder="Title">
-    <input id="author" type="text" placeholder="Author">
-
-    <button id="add" type="submit">Add</button>
-  </form>
-
-  <script src="main.js"></script>
-  
-</body>
+    <script src="main.js"></script>
+  </body>
 </html>

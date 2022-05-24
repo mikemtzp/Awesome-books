@@ -1,38 +1,81 @@
-const bookList = [
-  {
-    title: 'The lord of the rings',
-    author: 'Tolkien'
+function initiateBooksData() {
+  const initialBooks = localStorage.getItem('books');
+  if (initialBooks) {
+    return JSON.parse(initialBooks);
   }
-];
+  return [];
+}
 
-const body = document.querySelector('body');
-const form = document.getElementById('form');
-const newBook = document.createElement('div');
-const title = document.createElement('p');
-const author = document.createElement('p');
-const remove = document.createElement('button');
-const line = document.createElement('hr');
-title.textContent = bookList[0].title;
-author.textContent = bookList[0].author;
-remove.textContent = 'Remove'
+let bookList = initiateBooksData();
 
-newBook.append(title);
-newBook.append(author);
-newBook.append(remove);
-newBook.append(line);
-body.insertBefore(newBook, form);
+function generateId() {
+  if (bookList.length > 0) {
+    return bookList[bookList.length - 1].id + 1;
+  }
+  return -1;
+}
+
+function storeData() {
+  localStorage.setItem('books', JSON.stringify(bookList));
+}
 
 const add = document.getElementById('add');
-add.addEventListener('click', (e)=> {
+
+function Book(title, author, id) {
+  this.title = title;
+  this.author = author;
+  this.id = id;
+}
+
+function createBook({ title, author, id }) {
+  const newBook = document.createElement('div');
+  const titlePara = document.createElement('p');
+  const authorPara = document.createElement('p');
+  const remove = document.createElement('button');
+  remove.setAttribute('id', id);
+  const line = document.createElement('hr');
+  titlePara.textContent = title;
+  authorPara.textContent = author;
+  remove.textContent = 'Remove';
+
+  newBook.append(titlePara);
+  newBook.append(authorPara);
+  newBook.append(remove);
+  newBook.append(line);
+
+  remove.addEventListener('click', (e) => {
     e.preventDefault();
-    let newTitle = document.getElementById('title').textContent;
-    let newAuthor = document.getElementById('author').textContent;
-    let newBooklist = {
-      title : newTitle,
-      author : newAuthor
-    }
-    console.log(newBooklist)
-})
+    newBook.remove();
+    bookList = bookList.filter((book) => book.id !== id);
+    storeData();
+  });
+  return newBook;
+}
 
+function renderBooks() {
+  const bookSection = document.getElementById('bookSection');
+  const bookListElement = document.createElement('div');
+  bookListElement.id = 'bookList';
+  bookList.forEach((book) => {
+    const bookElem = createBook(book);
+    bookListElement.appendChild(bookElem);
+  });
+  bookSection.appendChild(bookListElement);
+}
 
+add.addEventListener('click', (e) => {
+  e.preventDefault();
+  const newTitle = document.getElementById('title');
+  const newAuthor = document.getElementById('author');
+  const theTitle = newTitle.value;
+  const theAuthor = newAuthor.value;
+  const theId = generateId();
+  const myBook = new Book(theTitle, theAuthor, theId);
+  const bookElement = createBook(myBook);
+  const bookListElement = document.getElementById('bookList');
+  bookListElement.appendChild(bookElement);
+  bookList.push(myBook);
+  storeData();
+});
 
+renderBooks();
