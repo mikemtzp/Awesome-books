@@ -32,4 +32,9 @@ add.addEventListener("click", (e) => {
   newBook.append(remove);
   newBook.append(line);
   body.insertBefore(newBook, form);
+
+  remove.addEventListener('click', (e) => {
+    e.preventDefault();
+    newBook.remove(bookList)
+  })
 });
