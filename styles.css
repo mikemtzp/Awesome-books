@@ -3,3 +3,18 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.books {
+  width: 100vw;
+}
+
+#booklist {
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,5 +1,5 @@
 function initiateBooksData() {
-  const initialBooks = localStorage.getItem('books');
+  const initialBooks = localStorage.getItem('bookList');
   if (initialBooks) {
     return JSON.parse(initialBooks);
   }
@@ -16,51 +16,60 @@ function generateId() {
 }
 
 function storeData() {
-  localStorage.setItem('books', JSON.stringify(bookList));
+  localStorage.setItem('bookList', JSON.stringify(bookList));
 }
+
 
 const add = document.getElementById('add');
 
-function Book(title, author, id) {
-  this.title = title;
-  this.author = author;
-  this.id = id;
+class Books {
+  constructor(title, author, id) {
+    this.title = title;
+    this.author = author;
+    this.id = id;
+  }
+
+
+
+  createBook({ title, author, id }) {
+    const newBook = document.createElement('div');
+    const titlePara = document.createElement('p');
+    const authorPara = document.createElement('p');
+    const remove = document.createElement('button');
+    remove.setAttribute('id', id);
+    const line = document.createElement('hr');
+    titlePara.textContent = title;
+    authorPara.textContent = author;
+    remove.textContent = 'Remove';
+
+    newBook.append(titlePara);
+    newBook.append(authorPara);
+    newBook.append(remove);
+    newBook.append(line);
+
+    remove.addEventListener('click', (e) => {
+      e.preventDefault();
+      newBook.remove();
+      bookList = bookList.filter((book) => book.id !== id);
+      storeData();
+    });
+    return newBook;
+  };
 }
+  
+    
 
-function createBook({ title, author, id }) {
-  const newBook = document.createElement('div');
-  const titlePara = document.createElement('p');
-  const authorPara = document.createElement('p');
-  const remove = document.createElement('button');
-  remove.setAttribute('id', id);
-  const line = document.createElement('hr');
-  titlePara.textContent = title;
-  authorPara.textContent = author;
-  remove.textContent = 'Remove';
-
-  newBook.append(titlePara);
-  newBook.append(authorPara);
-  newBook.append(remove);
-  newBook.append(line);
-
-  remove.addEventListener('click', (e) => {
-    e.preventDefault();
-    newBook.remove();
-    bookList = bookList.filter((book) => book.id !== id);
-    storeData();
-  });
-  return newBook;
-}
 
 function renderBooks() {
-  const bookSection = document.getElementById('bookSection');
+  const bookSection = document.querySelector('#bookSection');
   const bookListElement = document.createElement('div');
   bookListElement.id = 'bookList';
+  let element = '';
   bookList.forEach((book) => {
-    const bookElem = createBook(book);
-    bookListElement.appendChild(bookElem);
+    const bookElem = new Books(book.title,book.author,book.id);
+    const bookElement = bookElem.createBook(bookElem);
+    bookSection.append(bookElement);
   });
-  bookSection.appendChild(bookListElement);
 }
 
 add.addEventListener('click', (e) => {
@@ -70,10 +79,10 @@ add.addEventListener('click', (e) => {
   const theTitle = newTitle.value;
   const theAuthor = newAuthor.value;
   const theId = generateId();
-  const myBook = new Book(theTitle, theAuthor, theId);
-  const bookElement = createBook(myBook);
-  const bookListElement = document.getElementById('bookList');
-  bookListElement.appendChild(bookElement);
+  const myBook = new Books(theTitle, theAuthor, theId);
+  const bookElement =  myBook.createBook(myBook);
+  const bookListElement = document.getElementById('bookSection');
+  bookListElement.append(bookElement);
   bookList.push(myBook);
   storeData();
 });
