@@ -19,7 +19,6 @@ function storeData() {
   localStorage.setItem('bookList', JSON.stringify(bookList));
 }
 
-
 const add = document.getElementById('add');
 
 class Books {
@@ -29,24 +28,22 @@ class Books {
     this.id = id;
   }
 
-
-
   createBook({ title, author, id }) {
     const newBook = document.createElement('div');
     const titlePara = document.createElement('p');
     const authorPara = document.createElement('p');
     const remove = document.createElement('button');
-    remove.setAttribute('id', id);
-    titlePara.textContent = title;
-    authorPara.textContent = author;
-    const completeBook = `\"${title}\" by ${author}`
+    remove.setAttribute('id', this.id);
+    titlePara.textContent = this.title;
+    authorPara.textContent = this.author;
+    const completeBook = `"${title}" by ${author}`;
     remove.textContent = 'Remove';
-    newBook.classList.toggle('grey',id % 2 !== 0);
-    newBook.classList.toggle('white',id % 2 === 0);
+    newBook.classList.toggle('grey', id % 2 !== 0);
+    newBook.classList.toggle('white', id % 2 === 0);
     newBook.classList.add('position');
     remove.classList.add('remove');
 
-    //newBook.append(titlePara);
+    // newBook.append(titlePara);
     newBook.append(completeBook);
     newBook.append(remove);
 
@@ -57,19 +54,15 @@ class Books {
       storeData();
     });
     return newBook;
-  };
+  }
 }
-  
-    
-
 
 function renderBooks() {
   const bookSection = document.querySelector('.box');
   const bookListElement = document.createElement('div');
   bookListElement.id = 'bookList';
-  let element = '';
   bookList.forEach((book) => {
-    const bookElem = new Books(book.title,book.author,book.id);
+    const bookElem = new Books(book.title, book.author, book.id);
     const bookElement = bookElem.createBook(bookElem);
     bookSection.append(bookElement);
   });
@@ -83,7 +76,7 @@ add.addEventListener('click', (e) => {
   const theAuthor = newAuthor.value;
   const theId = generateId();
   const myBook = new Books(theTitle, theAuthor, theId);
-  const bookElement =  myBook.createBook(myBook);
+  const bookElement = myBook.createBook(myBook);
   const bookListElement = document.querySelector('.box');
   bookListElement.append(bookElement);
   bookList.push(myBook);
