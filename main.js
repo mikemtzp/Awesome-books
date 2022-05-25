@@ -37,15 +37,18 @@ class Books {
     const authorPara = document.createElement('p');
     const remove = document.createElement('button');
     remove.setAttribute('id', id);
-    const line = document.createElement('hr');
     titlePara.textContent = title;
     authorPara.textContent = author;
+    const completeBook = `\"${title}\" by ${author}`
     remove.textContent = 'Remove';
+    newBook.classList.toggle('grey',id % 2 !== 0);
+    newBook.classList.toggle('white',id % 2 === 0);
+    newBook.classList.add('position');
+    remove.classList.add('remove');
 
-    newBook.append(titlePara);
-    newBook.append(authorPara);
+    //newBook.append(titlePara);
+    newBook.append(completeBook);
     newBook.append(remove);
-    newBook.append(line);
 
     remove.addEventListener('click', (e) => {
       e.preventDefault();
@@ -61,7 +64,7 @@ class Books {
 
 
 function renderBooks() {
-  const bookSection = document.querySelector('#bookSection');
+  const bookSection = document.querySelector('.box');
   const bookListElement = document.createElement('div');
   bookListElement.id = 'bookList';
   let element = '';
@@ -81,7 +84,7 @@ add.addEventListener('click', (e) => {
   const theId = generateId();
   const myBook = new Books(theTitle, theAuthor, theId);
   const bookElement =  myBook.createBook(myBook);
-  const bookListElement = document.getElementById('bookSection');
+  const bookListElement = document.querySelector('.box');
   bookListElement.append(bookElement);
   bookList.push(myBook);
   storeData();
