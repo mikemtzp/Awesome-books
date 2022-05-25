@@ -43,7 +43,6 @@ class Books {
     newBook.classList.add('position');
     remove.classList.add('remove');
 
-    // newBook.append(titlePara);
     newBook.append(completeBook);
     newBook.append(remove);
 
