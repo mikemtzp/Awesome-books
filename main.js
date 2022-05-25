@@ -1,66 +1,76 @@
-function initiateBooksData() {
-  const initialBooks = localStorage.getItem('books');
-  if (initialBooks) {
-    return JSON.parse(initialBooks);
+/* eslint-disable */
+
+class Storage {
+  static storeData() {
+    localStorage.setItem('bookList', JSON.stringify(bookList));
   }
-  return [];
-}
 
-let bookList = initiateBooksData();
-
-function generateId() {
-  if (bookList.length > 0) {
-    return bookList[bookList.length - 1].id + 1;
+  static initiateBooksData() {
+    const initialBooks = localStorage.getItem('bookList');
+    if (initialBooks) {
+      return JSON.parse(initialBooks);
+    }
+    return [];
   }
-  return -1;
 }
 
-function storeData() {
-  localStorage.setItem('books', JSON.stringify(bookList));
-}
+let bookList = Storage.initiateBooksData();
 
 const add = document.getElementById('add');
 
-function Book(title, author, id) {
-  this.title = title;
-  this.author = author;
-  this.id = id;
+class Books {
+  constructor(title, author, id) {
+    this.title = title;
+    this.author = author;
+    this.id = id;
+  }
+
+  static createBook({ title, author, id }) {
+    const newBook = document.createElement('div');
+    const titlePara = document.createElement('p');
+    const authorPara = document.createElement('p');
+    const remove = document.createElement('button');
+    remove.setAttribute('id', this.id);
+    titlePara.textContent = this.title;
+    authorPara.textContent = this.author;
+    const completeBook = `"${title}" by ${author}`;
+    remove.textContent = 'Remove';
+    newBook.classList.toggle('grey', id % 2 !== 0);
+    newBook.classList.toggle('white', id % 2 === 0);
+    newBook.classList.add('position');
+    remove.classList.add('remove');
+
+    newBook.append(completeBook);
+    newBook.append(remove);
+
+    remove.addEventListener('click', (e) => {
+      e.preventDefault();
+      newBook.remove();
+      bookList = bookList.filter((book) => book.id !== id);
+      Storage.storeData();
+    });
+    return newBook;
+  }
+
+  static generateId() {
+    if (bookList.length > 0) {
+      return bookList[bookList.length - 1].id + 1;
+    }
+    return -1;
+  }
 }
 
-function createBook({ title, author, id }) {
-  const newBook = document.createElement('div');
-  const titlePara = document.createElement('p');
-  const authorPara = document.createElement('p');
-  const remove = document.createElement('button');
-  remove.setAttribute('id', id);
-  const line = document.createElement('hr');
-  titlePara.textContent = title;
-  authorPara.textContent = author;
-  remove.textContent = 'Remove';
-
-  newBook.append(titlePara);
-  newBook.append(authorPara);
-  newBook.append(remove);
-  newBook.append(line);
-
-  remove.addEventListener('click', (e) => {
-    e.preventDefault();
-    newBook.remove();
-    bookList = bookList.filter((book) => book.id !== id);
-    storeData();
-  });
-  return newBook;
-}
-
-function renderBooks() {
-  const bookSection = document.getElementById('bookSection');
-  const bookListElement = document.createElement('div');
-  bookListElement.id = 'bookList';
-  bookList.forEach((book) => {
-    const bookElem = createBook(book);
-    bookListElement.appendChild(bookElem);
-  });
-  bookSection.appendChild(bookListElement);
+class Render {
+  static renderBooks() {
+    const bookSection = document.querySelector('.box');
+    const bookListElement = document.createElement('div');
+    bookListElement.id = 'bookList';
+    bookList.forEach((book) => {
+      const bookElem = new Books(book.title, book.author, book.id);
+      const bookElement = bookElem.createBook(bookElem);
+      bookSection.append(bookElement);
+    });
+  }
 }
 
 add.addEventListener('click', (e) => {
@@ -69,13 +79,13 @@ add.addEventListener('click', (e) => {
   const newAuthor = document.getElementById('author');
   const theTitle = newTitle.value;
   const theAuthor = newAuthor.value;
-  const theId = generateId();
-  const myBook = new Book(theTitle, theAuthor, theId);
-  const bookElement = createBook(myBook);
-  const bookListElement = document.getElementById('bookList');
-  bookListElement.appendChild(bookElement);
+  const theId = Books.generateId();
+  const myBook = new Books(theTitle, theAuthor, theId);
+  const bookElement = Books.createBook(myBook);
+  const bookListElement = document.querySelector('.box');
+  bookListElement.append(bookElement);
   bookList.push(myBook);
-  storeData();
+  Storage.storeData();
 });
 
-renderBooks();
+Render.renderBooks();
