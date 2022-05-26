@@ -47,7 +47,7 @@ h1 {
 }
 
 .add-book {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
 }
@@ -103,8 +103,8 @@ h2 {
   margin: 0 1rem;
 }
 
-.contact {
-  display: flex;
+.contact-section {
+  display: none;
   flex-direction: column;
   align-items: center;
 }
@@ -126,7 +126,11 @@ h2 {
   justify-content: space-between;
   padding: 0.5rem;
   border: 2px solid black;
-  margin: 0.5rem;
-  position: absolute;
+  margin: 2rem 0.5rem 0.5rem;
+  position: relative;
   bottom: 0;
+}
+
+.menu :hover {
+  color: blue;
 }
